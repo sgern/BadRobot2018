@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import badlog.lib.BadLog;
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -63,18 +62,10 @@ public class Drivetrain extends Subsystem {
 		miniPID = new MiniPID(.05, .001, .20);
 		miniPID.setOutputLimits(.5);
 	}
-	
-	public void zeroYaw() {
-		ahrs.zeroYaw();
-	}
 
 	public void directDrive(double left, double right) {
 		rightFront.set(ControlMode.PercentOutput, -right);
 		leftFront.set(ControlMode.PercentOutput, left);
-	}
-	
-	public double getYaw() {
-		return ahrs.getYaw();
 	}
 	
 	public void rotate(double targetAngle, double power) {
@@ -94,8 +85,13 @@ public class Drivetrain extends Subsystem {
 		directDrive(speed - turnComp, speed + turnComp);
 		System.out.println(ahrs.getDisplacementX() + ", " + ahrs.getDisplacementY() + ", " + ahrs.getDisplacementZ());
 	}
-
-	public void initDefaultCommand() {
+	
+	public void zeroYaw() {
+		ahrs.zeroYaw();
+	}
+	
+	public double getYaw() {
+		return ahrs.getYaw();
 	}
 
 	public double getTargetAngle() {
@@ -108,5 +104,11 @@ public class Drivetrain extends Subsystem {
 	
 	private double getAngleCCW() {
 		return -ahrs.getAngle();
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
 	}
 }
